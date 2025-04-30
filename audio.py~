@@ -245,7 +245,7 @@ instruction = (
 )
 
 # --- Google Generative AI Configuration ---
-API_KEY = 
+API_KEY = "AIzaSyAFaiSryKD0F5ulWOjaWGEz4Ysws7Y9xnU"
 ai.configure(api_key=API_KEY)
 model = ai.GenerativeModel(model_name="gemini-1.5-flash", system_instruction=instruction)
 
@@ -310,7 +310,7 @@ def send_email(to_mail, subject, message):
         return False
 
 def is_valid_email(email):
-    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    pattern = r'^[\w\.-]+@[\w\.-]+\.com$'
     return re.match(pattern, email)
 if "compose_email" not in st.session_state:
     st.session_state.compose_email = False
@@ -349,6 +349,8 @@ with col1:
                 st.rerun()
             elif "send email" or " sent email" or "sent mail" or "send mail" or "compose email" in user_input.lower():
                 st.session_state.compose_email = True
+                st.session_state.show_text_input = False  # Hide text input after sending
+                st.rerun()
             else:
                 status_placeholder.info("📣 You said: " + user_input)
                 try:
@@ -396,7 +398,7 @@ if st.session_state.show_text_input:
                     time.sleep(3)
                     st.session_state.show_text_input = False  # Hide text input after sending
                     st.rerun()
-                elif 'mail' in user_query.lower():
+                elif ("send email" in user_query.lower()) or (" sent email" in user_query.lower()) or ("sent mail" in user_query.lower()) or ("send mail" in user_query.lower()) or ("compose email" in user_query.lower()):
                     st.session_state.compose_email = True
                     st.session_state.show_text_input = False  # Hide text input after sending
                     st.rerun()
@@ -416,11 +418,11 @@ if st.session_state.show_text_input:
 if st.session_state.compose_email:
     st.markdown("<h2 class='section-header'>📧 Compose Email</h2>", unsafe_allow_html=True)
     to_mail = st.text_input("To:", key="email_to", placeholder="Enter recipient email")
-    subject = st.text_input("Subject:", key="email_subject", placeholder="Enter email subject")
+    subject = st.text_input("Subject:", key="email_subject", placeholder="Enter email subject" )
     message = st.text_area("Message:", key="email_message", placeholder="Enter email message")
 
     if st.button("Send Email"):
-        if is_valid_email(to_mail):
+        if is_valid_email(to_mail) and subject and message:
             with st.spinner("Sending Email..."):
                 send_email(to_mail, subject, message)
                 st.success("Email sent successfully!")
@@ -429,7 +431,7 @@ if st.session_state.compose_email:
                 st.session_state.show_text_input = False
                 st.rerun()
         else:
-            st.error("Invalid email address.")
+            st.error("Enter valid details.")
             time.sleep(2)
             st.session_state.compose_email =True
             st.rerun()
