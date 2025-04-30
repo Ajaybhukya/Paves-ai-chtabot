@@ -347,7 +347,7 @@ with col1:
                     keep_listening = False  # Stop after taking picture
                 time.sleep(3)
                 st.rerun()
-            elif "send email" or " sent email" or "sent mail" or "send mail" or "compose email" in user_input.lower():
+            elif ( "send email" in user_input.lower()) or (" sent email" in user_input.lower()) or ("sent mail" in user_input.lower()) or ("send mail" in user_input.lower()) or ("compose email" in user_input.lower()):
                 st.session_state.compose_email = True
                 st.session_state.show_text_input = False  # Hide text input after sending
                 st.rerun()
@@ -398,7 +398,7 @@ if st.session_state.show_text_input:
                     time.sleep(3)
                     st.session_state.show_text_input = False  # Hide text input after sending
                     st.rerun()
-                elif ("send email" in user_query.lower()) or (" sent email" in user_query.lower()) or ("sent mail" in user_query.lower()) or ("send mail" in user_query.lower()) or ("compose email" in user_query.lower()):
+                elif ("send email" in user_query.lower()) or ("sent email" in user_query.lower()) or ("sent mail" in user_query.lower()) or ("send mail" in user_query.lower()) or ("compose email" in user_query.lower()):
                     st.session_state.compose_email = True
                     st.session_state.show_text_input = False  # Hide text input after sending
                     st.rerun()
